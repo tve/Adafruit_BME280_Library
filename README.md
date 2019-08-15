@@ -1,5 +1,14 @@
 # Adafruit BME280 Library [![Build Status](https://travis-ci.com/adafruit/Adafruit_BME280_Library.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_BME280_Library)
 
+## Fork for ESP32 by TvE
+
+- `begin` no longer calls `Wire.begin` so the application can call that itself and thereby specify
+  which pins it wants to use.
+- `_wire->endTransmission` uses `false` to allow the transction to continue, which is a requirement
+  for the ESP32's I2C library to work correctly.
+
+## Original README
+
 <a href="http://www.adafruit.com/products/2652"><img src="./assets/board.jpg" width="500"/></a>
 
 This is a library for the Adafruit BME280 Humidity, Barometric Pressure + Temp sensor

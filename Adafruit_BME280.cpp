@@ -119,7 +119,7 @@ bool Adafruit_BME280::init() {
   // init I2C or SPI sensor interface
   if (_cs == -1) {
     // I2C
-    _wire->begin();
+    //_wire->begin();
   } else {
     digitalWrite(_cs, HIGH);
     pinMode(_cs, OUTPUT);
@@ -136,6 +136,7 @@ bool Adafruit_BME280::init() {
 
   // check if sensor, i.e. the chip ID is correct
   _sensorID = read8(BME280_REGISTER_CHIPID);
+  //printf("BME280 %x ID: %x\n", _i2caddr, _sensorID);
   if (_sensorID != 0x60)
     return false;
 
@@ -227,7 +228,7 @@ void Adafruit_BME280::write8(byte reg, byte value) {
     _wire->beginTransmission((uint8_t)_i2caddr);
     _wire->write((uint8_t)reg);
     _wire->write((uint8_t)value);
-    _wire->endTransmission();
+    _wire->endTransmission(false);
   } else {
     if (_sck == -1)
       _spi->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
@@ -251,7 +252,7 @@ uint8_t Adafruit_BME280::read8(byte reg) {
   if (_cs == -1) {
     _wire->beginTransmission((uint8_t)_i2caddr);
     _wire->write((uint8_t)reg);
-    _wire->endTransmission();
+    _wire->endTransmission(false);
     _wire->requestFrom((uint8_t)_i2caddr, (byte)1);
     value = _wire->read();
   } else {
@@ -278,7 +279,7 @@ uint16_t Adafruit_BME280::read16(byte reg) {
   if (_cs == -1) {
     _wire->beginTransmission((uint8_t)_i2caddr);
     _wire->write((uint8_t)reg);
-    _wire->endTransmission();
+    _wire->endTransmission(false);
     _wire->requestFrom((uint8_t)_i2caddr, (byte)2);
     value = (_wire->read() << 8) | _wire->read();
   } else {
@@ -332,7 +333,7 @@ uint32_t Adafruit_BME280::read24(byte reg) {
   if (_cs == -1) {
     _wire->beginTransmission((uint8_t)_i2caddr);
     _wire->write((uint8_t)reg);
-    _wire->endTransmission();
+    _wire->endTransmission(false);
     _wire->requestFrom((uint8_t)_i2caddr, (byte)3);
 
     value = _wire->read();
